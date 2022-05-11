@@ -17,13 +17,23 @@ export default class NewBill {
   }
   handleChangeFile = e => {
     e.preventDefault()
+    const extensionsList = ["jpg", "png", "jpeg"]
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
+    const extensionFile = file.name.split(".").pop();
+    console.log(extensionFile)
     const formData = new FormData()
     const email = JSON.parse(localStorage.getItem("user")).email
     formData.append('file', file)
     formData.append('email', email)
+
+    if(extensionsList.includes(extensionFile)){
+      document.getElementById("btn-send-bill").disabled = false;
+    } else {
+      document.getElementById("btn-send-bill").disabled = true;
+      alert('Merci de choisir une image au format jpg, png, ou jpeg')
+    }
 
     this.store
       .bills()
